@@ -16,6 +16,6 @@ input.onButtonPressed(Button.B, () => {
 });
 
 const updateLED = () => {
-    basic.clearScreen()
+    basic.clearScreen();
     led.plot(x, y);
 };
