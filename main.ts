@@ -1,3 +1,3 @@
-basic.forever(() => {
-    music.playTone(Note.C, music.beat(BeatFraction.Whole))
+input.onButtonPressed(Button.A, () => {
+   basic.showString('William'); 
 });
