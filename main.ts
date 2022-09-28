@@ -11,9 +11,9 @@ const updateLED = () => {
 updateLED();
 
 input.onButtonPressed(Button.A, () => {
-    if (changingX && ledX > 0) {
+    if (changingX && ledX > 0)
         ledX--;
-    } else if (ledY > 0 && !changingX)
+    else if (ledY > 0 && !changingX)
         ledY--;
     updateLED();
 });
