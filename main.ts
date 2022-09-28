@@ -1,7 +1,7 @@
-let ledX = 2;
-let ledY = 2;
+let ledX: number = 2;
+let ledY: number = 2;
 // x = true, y = false
-let changingX = true;
+let changingX: boolean = true;
 
 const updateLED = () => {
     basic.clearScreen();
