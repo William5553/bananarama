@@ -13,7 +13,7 @@ updateLED();
 input.onButtonPressed(Button.A, () => {
     if (changingX && ledX > 0)
         ledX--;
-    else if (ledY > 0 && !changingX)
+    else if (!changingX && ledY > 0)
         ledY--;
     updateLED();
 });
