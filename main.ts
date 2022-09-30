@@ -1,30 +1,24 @@
 const GRID_SIZE = { X: 5, Y: 5 };
-
-let ledX: number = 2;
-let ledY: number = 2;
+const gridPos = { X: 2, Y: 2 };
 // x = true, y = false
 let changingX: boolean = true;
 
 const updateLED = () => {
     basic.clearScreen();
-    led.plot(ledX, ledY);
+    led.plot(gridPos.X, gridPos.Y);
 };
 
 updateLED();
 
 input.onButtonPressed(Button.A, () => {
-    if (changingX && ledX > 0)
-        ledX--;
-    else if (!changingX && ledY > 0)
-        ledY--;
+    if (gridPos[changingX ? 'X' : 'Y'] > 0)
+        gridPos[changingX ? 'X' : 'Y']--;
     updateLED();
 });
 
 input.onButtonPressed(Button.B, () => {
-    if (changingX && ledX < GRID_SIZE.X - 1)
-        ledX++;
-    else if (!changingX && ledY < GRID_SIZE.Y - 1)
-        ledY++;
+    if (gridPos[changingX ? 'X' : 'Y'] < GRID_SIZE[changingX ? 'X' : 'Y'] - 1)
+        gridPos[changingX ? 'X' : 'Y']++;
     updateLED();
 });
 
