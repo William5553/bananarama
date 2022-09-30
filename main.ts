@@ -1,3 +1,5 @@
+const GRID_SIZE = { X: 5, Y: 5 };
+
 let ledX: number = 2;
 let ledY: number = 2;
 // x = true, y = false
@@ -19,9 +21,9 @@ input.onButtonPressed(Button.A, () => {
 });
 
 input.onButtonPressed(Button.B, () => {
-    if (changingX && ledX < 4)
+    if (changingX && ledX < GRID_SIZE.X - 1)
         ledX++;
-    else if (!changingX && ledY < 4)
+    else if (!changingX && ledY < GRID_SIZE.Y - 1)
         ledY++;
     updateLED();
 });
