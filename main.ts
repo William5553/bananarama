@@ -15,10 +15,9 @@ const spawnFood = () => {
     currentFoodPos.X = Math.floor(Math.random() * GRID_SIZE.X);
     currentFoodPos.Y = Math.floor(Math.random() * GRID_SIZE.Y);
 
-    if (currentFoodPos.X === gridPos.X && currentFoodPos.Y === gridPos.Y)
-        spawnFood(); // using recusion on the first assignment!!
-    else
-        led.plotBrightness(currentFoodPos.X, currentFoodPos.Y, 120);
+    currentFoodPos.X === gridPos.X && currentFoodPos.Y === gridPos.Y
+        ? spawnFood() // using recusion on the first assignment!!
+        : led.plotBrightness(currentFoodPos.X, currentFoodPos.Y, 120);
 };
 
 const updateLED = () => {
