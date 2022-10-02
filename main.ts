@@ -31,6 +31,16 @@ const updateLED = () => {
     }
 };
 
+const plotTimer = () => {
+    const percentOn: number = timer / MAX_TIME;
+    const ledsOn: number = GRID_SIZE.X * (1 - percentOn);
+
+    for (let currX: number = GRID_SIZE.X; currX > 0; currX--)
+        currX >= ledsOn
+            ? led.unplot(currX - 1, GRID_SIZE.Y)
+            : led.plot(currX - 1, GRID_SIZE.Y)
+};
+
 const startGame = () => {
     score = 0;
     timer = 0;
@@ -39,6 +49,7 @@ const startGame = () => {
     gameActive = true;
     updateLED();
     spawnFood();
+    plotTimer();
 };
 
 input.onButtonPressed(Button.A, () => {
@@ -67,10 +78,11 @@ input.onLogoEvent(TouchButtonEvent.Pressed, () => {
 
 startGame();
 
-loops.everyInterval(1000, () => {
-    timer++;
+loops.everyInterval(100, () => { // uses 100 instead of 1000 for higher precision timer
+    if (!gameActive) return;
+    timer += 0.1;
 
-    if (timer === MAX_TIME) {
+    if (timer >= MAX_TIME) {
         gameActive = false;
         basic.showIcon(IconNames.Sad, 1000);
         basic.showNumber(score);
@@ -79,11 +91,5 @@ loops.everyInterval(1000, () => {
 
 basic.forever(() => {
     if (!gameActive) return;
-    const percentOn = timer / MAX_TIME;
-    const ledsOn = GRID_SIZE.X * (1 - percentOn);
-
-    for (let currX = GRID_SIZE.X; currX > 0; currX--)
-        currX >= ledsOn
-            ? led.unplot(currX - 1, GRID_SIZE.Y)
-            : led.plot(currX - 1, GRID_SIZE.Y)
+    plotTimer();
 });
