@@ -1,6 +1,7 @@
 type coordinate = { X: number, Y: number };
 
 const GRID_SIZE: coordinate = { X: 5, Y: 4 };
+const MAX_TIME: number = 10;
 
 const gridPos: coordinate = { X: -1, Y: -1 };
 const currentFoodPos: coordinate = { X: -1, Y: -1 };
@@ -14,7 +15,10 @@ const spawnFood = () => {
     currentFoodPos.X = Math.floor(Math.random() * GRID_SIZE.X);
     currentFoodPos.Y = Math.floor(Math.random() * GRID_SIZE.Y);
 
-    led.plotBrightness(currentFoodPos.X, currentFoodPos.Y, 120);
+    if (currentFoodPos.X === gridPos.X && currentFoodPos.Y === gridPos.Y)
+        spawnFood(); // using recusion on the first assignment!!
+    else
+        led.plotBrightness(currentFoodPos.X, currentFoodPos.Y, 120);
 };
 
 const updateLED = () => {
@@ -22,13 +26,17 @@ const updateLED = () => {
 
     if (gridPos.X === currentFoodPos.X && gridPos.Y === currentFoodPos.Y) {
         timer = 0;
+        score++;
         spawnFood();
     }
 };
 
 const startGame = () => {
+    score = 0;
+    timer = 0;
     gridPos.X = Math.floor(GRID_SIZE.X / 2);
     gridPos.Y = Math.floor(GRID_SIZE.Y / 2);
+    gameActive = true;
     updateLED();
     spawnFood();
 };
@@ -61,6 +69,12 @@ startGame();
 
 basic.forever(() => {
     timer++;
+
+    if (timer === MAX_TIME) {
+        gameActive = false;
+        basic.showIcon(IconNames.Sad, 1000);
+        basic.showNumber(score);
+    }
 
     basic.pause(1000);
 });
