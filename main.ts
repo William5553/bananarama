@@ -80,11 +80,10 @@ loops.everyInterval(1000, () => {
 basic.forever(() => {
     if (!gameActive) return;
     const percentOn = timer / MAX_TIME;
+    const ledsOn = GRID_SIZE.X * (1 - percentOn);
 
-    for (let currX = GRID_SIZE.X; currX > 0; currX--) {
-        if (currX >= GRID_SIZE.X * percentOn)
-            led.plot(currX - 1, GRID_SIZE.Y)
-        else
-            led.unplot(currX - 1, GRID_SIZE.Y)
-    }
+    for (let currX = GRID_SIZE.X; currX > 0; currX--)
+        currX >= ledsOn
+            ? led.unplot(currX - 1, GRID_SIZE.Y)
+            : led.plot(currX - 1, GRID_SIZE.Y)
 });
