@@ -32,6 +32,8 @@ const updateLED = () => {
 };
 
 const plotTimer = () => {
+    if (!gameActive) return;
+
     const percentOn: number = timer / MAX_TIME;
     const ledsOn: number = GRID_SIZE.X * (1 - percentOn);
 
@@ -89,7 +91,4 @@ loops.everyInterval(100, () => { // uses 100 instead of 1000 for higher precisio
     }
 });
 
-basic.forever(() => {
-    if (!gameActive) return;
-    plotTimer();
-});
+basic.forever(plotTimer);
