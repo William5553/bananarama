@@ -6,10 +6,11 @@ const gridPos: coordinate = { X: 2, Y: 2 };
 // x = true, y = false
 let changingX: boolean = true;
 
+let currentFoodPos: coordinate = { X: -1, Y: -1 };
 let score: number = 0;
 let timer: number = 0;
+let gameActive: boolean = true;
 
-let currentFoodPos: coordinate = { X: -1, Y: -1 };
 
 const updateLED = () => {
     // basic.clearScreen();
@@ -23,10 +24,9 @@ const spawnFood = () => {
     led.plot(currentFoodPos.X, currentFoodPos.Y);
 };
 
-updateLED();
-spawnFood();
-
 input.onButtonPressed(Button.A, () => {
+    if (!gameActive) return;
+
     if (gridPos[changingX ? 'X' : 'Y'] > 0) {
         led.unplot(gridPos.X, gridPos.Y);
         gridPos[changingX ? 'X' : 'Y']--;
@@ -35,6 +35,8 @@ input.onButtonPressed(Button.A, () => {
 });
 
 input.onButtonPressed(Button.B, () => {
+    if (!gameActive) return;
+
     if (gridPos[changingX ? 'X' : 'Y'] < GRID_SIZE[changingX ? 'X' : 'Y'] - 1) {
         led.unplot(gridPos.X, gridPos.Y);
         gridPos[changingX ? 'X' : 'Y']++;
@@ -45,3 +47,6 @@ input.onButtonPressed(Button.B, () => {
 input.onLogoEvent(TouchButtonEvent.Pressed, () => {
     changingX = !changingX;
 });
+
+updateLED();
+spawnFood();
