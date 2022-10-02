@@ -1,27 +1,36 @@
 type coordinate = { X: number, Y: number };
 
 const GRID_SIZE: coordinate = { X: 5, Y: 4 };
-const gridPos: coordinate = { X: 2, Y: 2 };
 
-// x = true, y = false
-let changingX: boolean = true;
-
-let currentFoodPos: coordinate = { X: -1, Y: -1 };
+const gridPos: coordinate = { X: -1, Y: -1 };
+const currentFoodPos: coordinate = { X: -1, Y: -1 };
+let gameActive: boolean = true;
+let changingX: boolean = true; // x = true, y = false
 let score: number = 0;
 let timer: number = 0;
-let gameActive: boolean = true;
 
-
-const updateLED = () => {
-    // basic.clearScreen();
-    led.plot(gridPos.X, gridPos.Y);
-};
 
 const spawnFood = () => {
-    currentFoodPos.X = Math.random() * GRID_SIZE.X;
-    currentFoodPos.Y = Math.random() * GRID_SIZE.Y;
+    currentFoodPos.X = Math.floor(Math.random() * GRID_SIZE.X);
+    currentFoodPos.Y = Math.floor(Math.random() * GRID_SIZE.Y);
 
-    led.plot(currentFoodPos.X, currentFoodPos.Y);
+    led.plotBrightness(currentFoodPos.X, currentFoodPos.Y, 120);
+};
+
+const updateLED = () => {
+    led.plot(gridPos.X, gridPos.Y);
+
+    if (gridPos.X === currentFoodPos.X && gridPos.Y === currentFoodPos.Y) {
+        timer = 0;
+        spawnFood();
+    }
+};
+
+const startGame = () => {
+    gridPos.X = Math.floor(GRID_SIZE.X / 2);
+    gridPos.Y = Math.floor(GRID_SIZE.Y / 2);
+    updateLED();
+    spawnFood();
 };
 
 input.onButtonPressed(Button.A, () => {
@@ -48,5 +57,10 @@ input.onLogoEvent(TouchButtonEvent.Pressed, () => {
     changingX = !changingX;
 });
 
-updateLED();
-spawnFood();
+startGame();
+
+basic.forever(() => {
+    timer++;
+
+    basic.pause(1000);
+});
