@@ -1,6 +1,6 @@
 type coordinate = { X: number, Y: number };
 
-const GRID_SIZE: coordinate = { X: 5, Y: 4 };
+const GRID_SIZE: coordinate = { X: 5, Y: 4 }; // y does not include timer
 const MAX_TIME: number = 10;
 
 const gridPos: coordinate = { X: -1, Y: -1 };
@@ -67,7 +67,7 @@ input.onLogoEvent(TouchButtonEvent.Pressed, () => {
 
 startGame();
 
-basic.forever(() => {
+loops.everyInterval(1000, () => {
     timer++;
 
     if (timer === MAX_TIME) {
@@ -75,6 +75,16 @@ basic.forever(() => {
         basic.showIcon(IconNames.Sad, 1000);
         basic.showNumber(score);
     }
+});
 
-    basic.pause(1000);
+basic.forever(() => {
+    if (!gameActive) return;
+    const percentOn = timer / MAX_TIME;
+
+    for (let currX = GRID_SIZE.X; currX > 0; currX--) {
+        if (currX >= GRID_SIZE.X * percentOn)
+            led.plot(currX - 1, GRID_SIZE.Y)
+        else
+            led.unplot(currX - 1, GRID_SIZE.Y)
+    }
 });
